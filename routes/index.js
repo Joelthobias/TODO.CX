@@ -8,18 +8,45 @@ var jwt = require('jsonwebtoken');
 const { auth, provider } = require('../helpers/Gauth');
 const todoHelper = require('../helpers/todoHelper');
 var router = express.Router();
-
+const verifylogin = (req, res, next) => {
+    if (req.session.loggedin) {
+        next(); 
+    } else {
+        res.redirect("/signin");
+    }
+}
 
 
 // GET Ports
 
 
-router.get('/signin',(req, res) => {
+  router.get('/signin',(req, res) => {
+    res.render('user/signin')
+  })
 
+  router.get('/view-todos',verifylogin,(req,res)=>{
+    let user=req.session.user
+    console.log(user.email) 
+    todoHelper.Todos(user.email).then((response)=>{
+      console.log(response); 
+      // res.json({
+      //   response
+      // })
+      res.render("todo/view-todo",{response})
+    })
+  })
+  // sort by Status
+  router.get('/view-todo/:status',verifylogin,(req,res)=>{
+    let email=req.session.user.email
+    let status=req.params.status
+    // res.json({status})
+    console.log(status + email);
+    todoHelper.viewtodos(status,email).then((response)=>{
+      console.log(response); 
+      res.render("todo/view-todo",{response})
+    })
+  })
 
-  res.render('user/signin')
-
-})
 
 
 
@@ -38,16 +65,17 @@ router.get('/signin',(req, res) => {
     if(User){
       req.session.user=UserData
       req.session.loggedin=true
-      todoHelper.viewTodos(email).then((response)=>{
-        res.render("todo/view-todo",{response})
-      })
+      res.redirect('/view-todos')
     }else{
       todoHelper.addUser(UserData).then((response)=>{
         if(status){
-          todoHelper.viewTodos(email).then((response)=>{
-            // res.json({data:response})
-            res.render("todo/view-todo",{response})
-          })
+          req.session.user=UserData
+          req.session.loggedin=true
+          res.redirect('/view-todos')
+          // res.json({
+          //   message:"create User",
+          //   status:200
+          // })
           
         }else{
           res.json({
@@ -60,7 +88,10 @@ router.get('/signin',(req, res) => {
   })
   router.post('/add-todo',(req,res)=>{
     let todo=req.body
-    
+    let user=req.session.user.email
+    todoHelper.addTodo(todo,user).then((response)=>{
+      res.redirect('/view-todos')
+    })
   })
 
 

@@ -1,9 +1,73 @@
-.todo-text{
-    font-family: Roboto;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 30px;
-    letter-spacing: 0em;
-    text-align: center;
+.todo-text {
+	font-family: Roboto;
+	font-size: 15px;
+	font-weight: 400;
+	line-height: 30px;
+	letter-spacing: 0em;
+	text-align: center;
+	width: 75%;
+}
+.inputs input{
+    margin: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 12px;
 
+    width: 378px;
+    height: 64px;
+
+    /* Neutral/1 */
+    background: #ffffff;
+
+    /* Neutral/5 */
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+form button {
+	align-items: center;
+	padding: 0px;
+	gap: 10px;
+	width: 100%;
+	height: 64px;
+	mix-blend-mode: normal;
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+	color: #fefefe;
+	background: #597EF7;
+	font-weight: bold;
+	display: flex;
+	align-content: center;
+	justify-content: center;
+}
+form button:hover{
+    background: #3A63EA;
+}
+.form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.add-todo::after {
+	content: " ";
+	height: 100%;
+	width: 5px;
+	background-color: #111;
+	display: inline-block;
+}
+.todos{
+    border: none;
+    border-bottom: 1px solid rgb(171, 171, 171);
+}
+.todo-more {
+	display: inline-grid;
+	margin-left: auto;
+	align-content: center;
+	justify-content: end;
 }

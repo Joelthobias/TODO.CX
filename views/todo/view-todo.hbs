@@ -2,7 +2,7 @@
 
 <section class="container">
     <div class="row mt-5">
-        <div class="col-md-6 ">
+        <div class="col-md-7 leftdiv">
             <div class="logo mb-5">
                 <img src="../images/group.svg" alt="">
             </div>
@@ -14,11 +14,51 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Aliquet at eleifend feugiat vitae faucibus nibh dolor dui. 
                 </div>
-                <div class="form">
-                    <form action="/add-todo" method="post"></form>
+                <div class="form mt-5">
+                    <form action="/add-todo" method="post">
+                        <div class="inputs">
+                            <input type="text" placeholder="Title" name="title" >
+                            <input type="text" placeholder="Description" name="description" >
+                        </div>
+                        <button type="submit">ADD</button>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="col-md-6"></div>
+        <div class="col-md-5 mt-5 container-fluid">
+            <h3>TODO LIST</h3>
+            <div class="row " style="min-height: 200px;">
+                <div class="col-9"></div>
+                <div class="col-3">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Filtered  By</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/view-todo/completed">Completed</a></li>
+                        <li><a class="dropdown-item" href="/view-todo/fav">Favourite</a></li>
+                        <li><a class="dropdown-item" href="/view-todo/deleted">Deleted</a></li>
+                        <li><a class="dropdown-item" href="/view-todos">All</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                    </ul>
+
+                </div>
+            </div>
+            {{#each response}}
+            <div class="row todos p-2 ">
+                <div class="col-10">
+                    <h5>{{this.title}}</h5>
+                    <h6>{{this.description}}</h6>
+                </div>
+                <div class="col-2  todo-more">
+                    
+                    <a class="nav-link " data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="../images/more.svg" alt=""></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/view-todos/?status=completed">Complete</a></li>
+                        <li><a class="dropdown-item" href="/view-todos/?status=Favourite">Favourite</a></li>
+                        <li><a class="dropdown-item" href="/view-todos/?status=Deleted">Delete</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                    </ul>
+                </div>
+            </div>
+            {{/each}}
+        </div>
     </div>
 </section>

@@ -6,7 +6,7 @@ module.exports={
     addUser:(data)=>{
         return new Promise(async(resolve,reject)=>{
             db.get().collection("User").insertOne(data).then((response)=>{
-                resolve(true)
+                resolve({status:true})
                 console.log("user added");
             })
         })
@@ -42,7 +42,7 @@ module.exports={
             })
         })
     },
-    viewTodos:(email)=>{
+    Todos:(email)=>{
         return new Promise(async(resolve,reject)=>{
             let todos=await db.get().collection("User")
             .aggregate([
@@ -55,7 +55,34 @@ module.exports={
                     $project: {
                     title: "$todo.title",
                     description: "$todo.description",
+                    status:"$todo.status"
                     }
+                },
+                {
+                    $match:{status:{$ne:"deleted"}}
+                }
+            ]).toArray()
+            resolve(todos)
+        })
+    },
+    //sort by status
+    viewtodos:(status,email)=>{
+        return new Promise(async(resolve,reject)=>{
+            let todos=await db.get().collection("User")
+            .aggregate([
+                {
+                    $match: { email: email }
+                },
+                {
+                    $unwind: "$todo",
+                },{
+                    $project: {
+                    title: "$todo.title",
+                    description: "$todo.description",
+                    status:"$todo.status"
+                    }
+                },{
+                    $match:{status:status}
                 }
             ]).toArray()
             resolve(todos)
