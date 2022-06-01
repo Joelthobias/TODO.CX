@@ -112,6 +112,7 @@ module.exports={
                         deleted:"$todo.deleted",
                         fav:"$todo.fav",
                         completed:"$todo.completed",
+                        Date:"$todo.Date"
                         }
                     },{
                         $match:{completed:true}
@@ -133,6 +134,7 @@ module.exports={
                         deleted:"$todo.deleted",
                         fav:"$todo.fav",
                         completed:"$todo.completed"
+                        Date:"$todo.Date"
                         }
                     },{
                         $match:{deleted:true}
