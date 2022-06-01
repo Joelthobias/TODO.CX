@@ -12,7 +12,7 @@ const verifylogin = (req, res, next) => {
     if (req.session.loggedin) {
         next(); 
     } else {
-        res.redirect("/signin");
+        res.redirect("/");
     }
 }
 
@@ -20,7 +20,7 @@ const verifylogin = (req, res, next) => {
 // GET Ports
 
 
-  router.get('/signin',(req, res) => {
+  router.get('/',(req, res) => {
     res.render('user/signin')
   })
 
@@ -29,9 +29,9 @@ const verifylogin = (req, res, next) => {
     console.log(user.email) 
     todoHelper.Todos(user.email).then((response)=>{
       console.log(response); 
-      // res.json({
-      //   response
-      // })
+        // res.json({
+        //   response
+        // })
       res.render("todo/view-todo",{response})
     })
   })
@@ -46,29 +46,42 @@ const verifylogin = (req, res, next) => {
       res.render("todo/view-todo",{response})
     })
   })
-
-
+  // Update Status and mark todo as Delete
+  router.get('/update-sts/:status/:date',verifylogin,(req,res)=>{
+    let email=req.session.user.email
+    let {status}=req.params
+    let {date}=req.params
+    // res.json({status})
+    console.log(status +" gggggggg "+ date);
+    todoHelper.changeStatus(status,date,email).then(()=>{
+      console.log("Updated"); 
+      res.redirect('/view-todos')
+    })
+  })
 
 
 // POST Ports
 
 
-  router.post('/signin',(req,res)=>{
+  router.post('/signin',async(req,res)=>{
     var decoded = jwt.decode(req.body.credential);
     let {email,name,picture}=decoded
     let UserData={
       email,name,picture
     }
     // res.json({UserData})
-    let User=todoHelper.findUser(email)
-    let status=false
+  
+    
+    let User=await todoHelper.findUser(email)
     if(User){
       req.session.user=UserData
       req.session.loggedin=true
       res.redirect('/view-todos')
     }else{
       todoHelper.addUser(UserData).then((response)=>{
-        if(status){
+
+        if(response){
+          console.log("user created");
           req.session.user=UserData
           req.session.loggedin=true
           res.redirect('/view-todos')
@@ -94,59 +107,4 @@ const verifylogin = (req, res, next) => {
     })
   })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-router.get('/', function (req, res, next) {
-    res.send("hi")
-});
-router.get('/signin',(req,res)=>{
-
-  res.render('sigin')
-})
-  router.post('/signin', function (req, res, next) {
-      req.session.user = req.body
-      let email = req.body.email
-      let data = req.body
-      todoHelper.findUser(email).then((response) => {
-          if (response) {
-              res.json({data: response})
-
-          } else {
-
-              todoHelper.addUser(req.body).then((response) => {
-                  res.json({datas: req.body})
-                  req.session.loggedIn = true
-                  req.session.user = req.body
-                  console.log(req.session.user);
-              })
-          }
-      })
-
-  });
-router.post('/addTodo', (req, res) => {
-
-    console.log(req.session.loggedIn);
-    console.log(req.body);
-    // todoHelper.addTodo(req.body,user).then((response)=>{
-    // res.json("done")
-    // })
-})
 module.exports = router;

@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="../stylesheets/todoview.css">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 <section class="container">
     <div class="row mt-5">
         <div class="col-md-7 leftdiv">
@@ -19,6 +19,10 @@
                         <div class="inputs">
                             <input type="text" placeholder="Title" name="title" >
                             <input type="text" placeholder="Description" name="description" >
+                            <input type="hidden" name="deleted" value=false>
+                            <input type="hidden" name="fav" value=false>
+                            <input type="hidden" name="completed" value=false>
+                            <input type="hidden" id="Date" name="Date" value=" ">
                         </div>
                         <button type="submit">ADD</button>
                     </form>
@@ -48,12 +52,22 @@
                     <h6>{{this.description}}</h6>
                 </div>
                 <div class="col-2  todo-more">
-                    
+                    {{#if this.fav}}
+                        <i onclick="window.location.href='/update-sts/fav/{{this.Date}}'" class="bi bi-star-fill justify-content-start text-warning"></i>
+                    {{else}}
+                        <i onclick="window.location.href='/update-sts/fav/{{this.Date}}'" class="bi bi-star-fill justify-content-start "></i>
+
+                    {{/if}}
+                    {{#if this.completed}}
+                        <i onclick="window.location.href='/update-sts/completed/{{this.Date}}'" class="bi bi-check-circle-fill text-success"></i>
+                    {{else}}
+                        <i onclick="window.location.href='/update-sts/completed/{{this.Date}}'" class="bi bi-check-circle-fill"></i>
+                    {{/if}}
                     <a class="nav-link " data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="../images/more.svg" alt=""></a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/view-todos/?status=completed">Complete</a></li>
-                        <li><a class="dropdown-item" href="/view-todos/?status=Favourite">Favourite</a></li>
-                        <li><a class="dropdown-item" href="/view-todos/?status=Deleted">Delete</a></li>
+                        <li><a class="dropdown-item" href="/update-sts/completed/{{this.Date}}">Mark as Complete</a></li>
+                        <li><a class="dropdown-item" href="/update-sts/fav/{{this.Date}}">Mark as Favourite</a></li>
+                        <li><a class="dropdown-item" href="/update-sts/deleted/{{this.Date}}">Mark as Delete</a></li>
                         <li><hr class="dropdown-divider"></li>
                     </ul>
                 </div>
@@ -62,3 +76,10 @@
         </div>
     </div>
 </section>
+<script>
+    const D=new Date()
+    let dt=D.getTime()
+    D.setTime(dt)
+    
+    document.getElementById("Date").value=dt
+</script>
