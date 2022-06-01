@@ -54,8 +54,10 @@ const verifylogin = (req, res, next) => {
     // res.json({status})
     console.log(status +" gggggggg "+ date);
     todoHelper.changeStatus(status,date,email).then(()=>{
-      console.log("Updated"); 
-      res.redirect('/view-todos')
+        res.json({
+          data:response,
+          user:req.session.user
+        })
     })
   })
 
