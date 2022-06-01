@@ -46,30 +46,33 @@
                 </div>
             </div>
             {{#each response}}
-            <div class="row todos p-2 ">
-                <div class="col-10">
-                    <h5>{{this.title}}</h5>
-                    <h6>{{this.description}}</h6>
-                </div>
-                <div class="col-2  todo-more">
-                    {{#if this.fav}}
-                        <i onclick="window.location.href='/update-sts/fav/{{this.Date}}'" class="bi bi-star-fill justify-content-start text-warning"></i>
-                    {{else}}
-                        <i onclick="window.location.href='/update-sts/fav/{{this.Date}}'" class="bi bi-star-fill justify-content-start "></i>
+            <div id="tood">
 
-                    {{/if}}
-                    {{#if this.completed}}
-                        <i onclick="window.location.href='/update-sts/completed/{{this.Date}}'" class="bi bi-check-circle-fill text-success"></i>
-                    {{else}}
-                        <i onclick="window.location.href='/update-sts/completed/{{this.Date}}'" class="bi bi-check-circle-fill"></i>
-                    {{/if}}
-                    <a class="nav-link " data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="../images/more.svg" alt=""></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/update-sts/completed/{{this.Date}}">Mark as Complete</a></li>
-                        <li><a class="dropdown-item" href="/update-sts/fav/{{this.Date}}">Mark as Favourite</a></li>
-                        <li><a class="dropdown-item" href="/update-sts/deleted/{{this.Date}}">Mark as Delete</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                    </ul>
+                <div  class="row todos p-2 ">
+                    <div class="col-10">
+                        <h5>{{this.title}}</h5>
+                        <h6>{{this.description}}</h6>
+                    </div>
+                    <div class="col-2  todo-more">
+                        {{#if this.fav}}
+                            <i id="s{{this.Date}}" onclick="changeStatus('/update-sts/fav/{{this.Date}}',{{this.Date}})" class="bi bi-star-fill justify-content-start text-war"></i>
+                        {{else}}
+                            <i id="s{{this.Date}}" onclick="changeStatus('/update-sts/fav/{{this.Date}}',{{this.Date}})" class="bi bi-star-fill justify-content-start "></i>
+
+                        {{/if}}
+                        {{#if this.completed}}
+                            <i id="d{{this.Date}}" onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})" class="bi bi-check-circle-fill text-success"></i>
+                        {{else}}
+                            <i id="d{{this.Date}}" onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})" class="bi bi-check-circle-fill"></i>
+                        {{/if}}
+                        <a class="nav-link " data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="../images/more.svg" alt=""></a>
+                        <ul class="dropdown-menu">
+                            <li onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})" >Mark as Complete</li>
+                            <li onclick="changeStatus('/update-sts/fav/{{this.Date}}',{{this.Date}})">Mark as Favourite</li>
+                            <li onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})"><a class="dropdown-item" href="/update-sts/deleted/{{this.Date}}">Mark as Delete</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             {{/each}}
@@ -82,4 +85,35 @@
     D.setTime(dt)
     
     document.getElementById("Date").value=dt
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    
+    var changeStatus=(url,id)=>{
+        $.ajax({
+            url:url,
+            method:'get',
+            success:(response)=>{
+                id="#s"+id
+                console.log(id)
+                $(id).toggleClass('text-war');
+                
+            }
+        })
+    }
+
+</script>
+<script>
+    var changeStat=(url,id)=>{
+        $.ajax({
+            url:url,
+            method:'get',
+            success:(response)=>{
+                id="#d"+id
+                console.log(id)
+                $(id).toggleClass('text-success');
+                
+            }
+        })
+    }
 </script>
