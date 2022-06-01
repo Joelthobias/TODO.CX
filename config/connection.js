@@ -4,7 +4,7 @@ const state={
     db:null
 }
 module.exports.connect=(done)=>{
-//     const url ='mongodb://localhost:27017'
+    // const url ='mongodb://localhost:27017'
     const url='mongodb+srv://joel:123@cluster0.chsu5.mongodb.net/test'
     const dbname='todo'
     

@@ -1,6 +1,7 @@
 const { async } = require('@firebase/util');
 const { response } = require('express');
 var express = require('express');
+const { json } = require('express/lib/response');
 // const {signInWithPopup, getAuth, initializeApp, GoogleAuthProvider} = require('firebase/auth');
 
 var jwt = require('jsonwebtoken');
@@ -30,8 +31,10 @@ const verifylogin = (req, res, next) => {
     todoHelper.Todos(user.email).then((response)=>{
       console.log(response); 
         // res.json({
-        //   response
+        //   data:response,
+        //   user:req.session.user
         // })
+        
       res.render("todo/view-todo",{response})
     })
   })
@@ -43,6 +46,10 @@ const verifylogin = (req, res, next) => {
     console.log(status + email);
     todoHelper.viewtodos(status,email).then((response)=>{
       console.log(response); 
+      // res.json({
+      //   data:response,
+      //   user:req.session.user
+      // })
       res.render("todo/view-todo",{response})
     })
   })
@@ -54,8 +61,12 @@ const verifylogin = (req, res, next) => {
     // res.json({status})
     console.log(status +" gggggggg "+ date);
     todoHelper.changeStatus(status,date,email).then(()=>{
-      console.log("Updated"); 
-      res.redirect('/view-todos')
+      todoHelper.Todos(email).then((response)=>{
+        res.json({
+          data:response,
+          user:req.session.user
+        })
+    })
     })
   })
 
@@ -77,6 +88,7 @@ const verifylogin = (req, res, next) => {
       req.session.user=UserData
       req.session.loggedin=true
       res.redirect('/view-todos')
+
     }else{
       todoHelper.addUser(UserData).then((response)=>{
 
@@ -102,8 +114,12 @@ const verifylogin = (req, res, next) => {
   router.post('/add-todo',(req,res)=>{
     let todo=req.body
     let user=req.session.user.email
-    todoHelper.addTodo(todo,user).then((response)=>{
-      res.redirect('/view-todos')
+    todoHelper.addTodo(todo,user).then(()=>{
+      res.json({
+        todo
+      })
+      
+
     })
   })
 
