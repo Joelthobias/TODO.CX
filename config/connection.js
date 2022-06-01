@@ -16,4 +16,4 @@ module.exports.connect=(done)=>{
 }
 module.exports.get=()=>{
     return state.db
-}mongodb+srv://joel:123@cluster0.chsu5.mongodb.net/test
+}
