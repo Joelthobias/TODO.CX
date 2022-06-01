@@ -35,6 +35,8 @@ module.exports={
     },
     addTodo:(data,user)=>{
         return new Promise((resolve,reject)=>{
+            data.fav=false
+            data.completed=false
             
             db.get().collection("User").updateOne({email:user},{$push:{todo:data}}).then(()=>{
                 resolve(true)
