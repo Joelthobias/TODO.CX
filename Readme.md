@@ -2,10 +2,11 @@ PORTS
 
     GET
 
-        /view-todos
+        /  { home page }
+        /view-todos { Dashboard }
+        /update-sts/:status/:date {Mark todo as favoratie and Completed and Deleted }
+        /view-todo/:status {sort by favorite and completed and deleted}
         /edit-todo
-        /update-status
-        /signin
 
     POST 
 
