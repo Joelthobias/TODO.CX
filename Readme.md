@@ -21,7 +21,21 @@ SCHEMA
         email,
         profileImg,
         todo[
-            {title,description,date,status},
-            {title,description,date,status}
+            {
+                title,
+                description,
+                Date,
+                Completed,
+                fav,
+                Deleted
+            },
+            {
+                title,
+                description,
+                Date,
+                Completed,
+                fav,
+                Deleted
+            }
         ]
     }
