@@ -64,7 +64,7 @@ module.exports={
                     }
                 },
                 {
-                    $match:{deleted:false}
+                    $match:{deleted:{$ne:"true"}}
                 },{ $sort : { Date : 1 } }
             ]).toArray()
             resolve(todos)
