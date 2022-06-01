@@ -5,7 +5,7 @@ const state={
 }
 module.exports.connect=(done)=>{
 //     const url ='mongodb://localhost:27017'
-    const url='mongodb+srv://joel:123cluster0.chsu5.mongodb.net/admin'
+    const url='mongodb+srv://joel:123@cluster0.chsu5.mongodb.net/test'
     const dbname='todo'
     
     MongoClient.connect(url,(err,data)=>{
@@ -16,4 +16,4 @@ module.exports.connect=(done)=>{
 }
 module.exports.get=()=>{
     return state.db
-}
+}mongodb+srv://joel:123@cluster0.chsu5.mongodb.net/test
