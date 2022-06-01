@@ -37,6 +37,7 @@ module.exports={
         return new Promise((resolve,reject)=>{
             data.fav=false
             data.completed=false
+            data.deleted=false
             
             db.get().collection("User").updateOne({email:user},{$push:{todo:data}}).then(()=>{
                 resolve(true)
@@ -64,7 +65,7 @@ module.exports={
                     }
                 },
                 {
-                    $match:{deleted:{$ne:"true"}}
+                    $match:{deleted:{$ne:true}}
                 },{ $sort : { Date : 1 } }
             ]).toArray()
             resolve(todos)
