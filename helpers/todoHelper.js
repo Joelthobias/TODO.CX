@@ -133,7 +133,7 @@ module.exports={
                         description: "$todo.description",
                         deleted:"$todo.deleted",
                         fav:"$todo.fav",
-                        completed:"$todo.completed"
+                        completed:"$todo.completed",
                         Date:"$todo.Date"
                         }
                     },{
