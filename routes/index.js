@@ -25,6 +25,11 @@ const verifylogin = (req, res, next) => {
     res.render('user/signin')
   })
 
+  router.get('/logout',(req,res)=>{
+    req.session.user=" "
+    req.session.loggedin=false
+    res.redirect('/')
+  })
   router.get('/view-todos',verifylogin,(req,res)=>{
     let user=req.session.user
     console.log(user.email) 
@@ -62,10 +67,11 @@ const verifylogin = (req, res, next) => {
     console.log(status +" gggggggg "+ date);
     todoHelper.changeStatus(status,date,email).then(()=>{
       todoHelper.Todos(email).then((response)=>{
-        res.json({
-          data:response,
-          user:req.session.user
-        })
+        // res.json({
+        //   data:response,
+        //   user:req.session.user
+        // })
+        res.redirect("/view-todos")
     })
     })
   })
