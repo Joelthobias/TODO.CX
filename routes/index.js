@@ -36,8 +36,9 @@ const verifylogin = (req, res, next) => {
     todoHelper.Todos(user.email).then((response)=>{
       console.log(response); 
         // res.json({
-        //   data:response,
-        //   user:req.session.user
+        //   response,
+        //   status:200
+        //   // user:req.session.user
         // })
         
       res.render("todo/view-todo",{response})
@@ -86,6 +87,7 @@ const verifylogin = (req, res, next) => {
     let UserData={
       email,name,picture
     }
+    console.log(email);
     // res.json({UserData})
   
     

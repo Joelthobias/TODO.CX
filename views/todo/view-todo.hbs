@@ -18,7 +18,7 @@
                     Aliquet at eleifend feugiat vitae faucibus nibh dolor dui. 
                 </div>
                 <div class="form mt-5">
-                    <form method="post" action="/add-todo" id="todoForm" >
+                    <form id="submit-form" method="post"  >
                         <div class="inputs">
                             <input type="text" placeholder="Title" name="title" >
                             <input type="text" placeholder="Description" name="description" >
@@ -49,8 +49,6 @@
 
                 </div>
             </div>
-            
-
             {{#each response}}
             <div id="tood">
 
@@ -82,10 +80,18 @@
                 </div>
             </div>
             {{/each}}
+            <div id="repositories">
+
+            </div>
+            <div id="repo"></div>
+            
+
+
         </div>
     </div>
 </section>
 <script>
+
     const D=new Date()
     let dt=D.getTime()
     D.setTime(dt)
@@ -123,52 +129,85 @@
         })
     }
 </script>
-{{!-- <script>
-$("#submit").click(function(e) {
-    const e=document.getElementById("todoForm")
-    e.preventDefault();
- // avoid to execute the actual submit of the form.
 
-    var form = $(todoForm);
-    
-    $.ajax({
-        type: "POST",
-        url: /add-todo,
-        data: form.serialize(), // serializes the form's elements.
-        success: function(data)
-        {
-            const list=document.getElementById("toos")
-            const node=document.getElementById("todos")
-            node.innerHTML=`
-            <div  class="row  p-2 ">
-                <div class="col-10">
-                    <h5>{{this.title}}</h5>
-                    <h6>{{this.description}}</h6>
-                </div>
-                <div class="col-2  todo-more">
-                    {{#if this.fav}}
-                        <i id="s{{this.Date}}" onclick="changeStatus('/update-sts/fav/{{this.Date}}',{{this.Date}})" class="bi bi-star-fill justify-content-start text-war"></i>
-                    {{else}}
-                        <i id="s{{this.Date}}" onclick="changeStatus('/update-sts/fav/{{this.Date}}',{{this.Date}})" class="bi bi-star-fill justify-content-start "></i>
 
-                    {{/if}}
-                    {{#if this.completed}}
-                        <i id="d{{this.Date}}" onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})" class="bi bi-check-circle-fill text-success"></i>
-                    {{else}}
-                        <i id="d{{this.Date}}" onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})" class="bi bi-check-circle-fill"></i>
-                    {{/if}}
-                    <a class="nav-link " data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="../images/more.svg" alt=""></a>
-                    <ul class="dropdown-menu">
-                        <li onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})" >Mark as Complete</li>
-                        <li onclick="changeStatus('/update-sts/fav/{{this.Date}}',{{this.Date}})">Mark as Favourite</li>
-                        <li onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})"><a class="dropdown-item" href="/update-sts/deleted/{{this.Date}}">Mark as Delete</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                    </ul>
+<script id="repository-template" type="text/x-handlebars-template">
+        {{#each response}}
+            <div id="tood">
+
+                <div  class="row todos p-2 ">
+                    <div class="col-10">
+                        <h5>{{this.title}}</h5>
+                        <h6>{{this.description}}</h6>
+                    </div>
+                    <div class="col-2  todo-more">
+                        {{#if this.fav}}
+                            <i id="s{{this.Date}}" onclick="changeStatus('/update-sts/fav/{{this.Date}}',{{this.Date}})" class="bi bi-star-fill justify-content-start text-war"></i>
+                        {{else}}
+                            <i id="s{{this.Date}}" onclick="changeStatus('/update-sts/fav/{{this.Date}}',{{this.Date}})" class="bi bi-star-fill justify-content-start "></i>
+
+                        {{/if}}
+                        {{#if this.completed}}
+                            <i id="d{{this.Date}}" onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})" class="bi bi-check-circle-fill text-success"></i>
+                        {{else}}
+                            <i id="d{{this.Date}}" onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})" class="bi bi-check-circle-fill"></i>
+                        {{/if}}
+                        <a class="nav-link " data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="../images/more.svg" alt=""></a>
+                        <ul class="dropdown-menu">
+                            <li onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})" >Mark as Complete</li>
+                            <li onclick="changeStatus('/update-sts/fav/{{this.Date}}',{{this.Date}})">Mark as Favourite</li>
+                            <li onclick="changeStat('/update-sts/completed/{{this.Date}}',{{this.Date}})"><a class="dropdown-item" href="/update-sts/deleted/{{this.Date}}">Mark as Delete</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>  ` 
-            list.append(node)     
-        }
-    });
-    
-});
-</script> --}}
+            </div>
+            {{/each}}
+    </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js" integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    function showRepositories(data,event) {
+        console.log(data)
+        const repos =this.responseText
+        const src = document.getElementById("repository-template").innerHTML
+        const template = Handlebars.compile(src)
+        const repoList = template(repos)
+        document.getElementById("repositories").innerHTML=repoList
+
+    }
+
+</script>
+<script>
+    function getRepositories() {
+        console.log("called")
+    fetch('/view-todos')
+    .then(response => showRepositories(response))
+    .then(data => console.log(data));
+
+    }
+
+</script>
+<span onload="getRepositories()"></span>
+<script>
+	
+
+	$("#submit-form").submit((e) => {
+	e.preventDefault()
+        $.ajax({
+            url: "/add-todo",
+            data: $("#submit-form").serialize(),
+            method: "post",
+            success: function (response) {
+                getRepositories()
+
+            },
+            error: function (err) {
+                alert("Something Error")
+            }
+        })
+	
+
+    })
+
+</script>
